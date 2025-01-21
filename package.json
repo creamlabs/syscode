@@ -9,7 +9,9 @@
     "lint": "next lint",
     "prepare": "husky",
     "db:migrate": "drizzle-kit migrate",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
   },
   "lint-staged": {
     "src/**/*.{js,ts,jsx,tsx}": [
