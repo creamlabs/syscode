@@ -8,10 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
+    "format": "prettier --write ./src/**/*.{ts,tsx,json,md}",
+    "lint:eslint:fix": "eslint . --fix",
+    "lint:prettier:fix": "prettier --write ./src/**/*.{ts,tsx,json,md}",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "lint:fix": "pnpm run lint:eslint:fix && pnpm run lint:prettier:fix"
   },
   "lint-staged": {
     "src/**/*.{js,ts,jsx,tsx}": [
@@ -38,19 +42,26 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.18.0",
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
     "drizzle-kit": "^0.30.2",
-    "eslint": "^9",
+    "eslint": "^9.18.0",
     "eslint-config-next": "15.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.1",
     "postcss": "^8",
     "prettier": "3.4.2",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.21.0"
   }
 }
