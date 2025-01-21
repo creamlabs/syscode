@@ -3,14 +3,22 @@ import {
   pgTable,
   varchar,
   timestamp,
-  uuid,
+  serial,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 
+export const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
+export const submissionStatusEnum = pgEnum("submission_status", [
+  "pending",
+  "accepted",
+  "rejected",
+]);
+
 export const problemsTable = pgTable("problems", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
   description: varchar("description", { length: 255 }).notNull(),
-  difficulty: varchar("difficulty", { length: 50 }).notNull(), //TODO:ENUM
+  difficulty: difficultyEnum("difficulty").notNull(),
   totalSolved: integer("total_solved").default(0),
   hint: varchar("hint", { length: 255 }).array(),
   likes: integer("likes").default(0),
@@ -20,7 +28,7 @@ export const problemsTable = pgTable("problems", {
 });
 
 export const usersTable = pgTable("users", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: serial("id").primaryKey(),
   githubUsername: varchar("github_username", { length: 255 }).notNull(),
   image: varchar("image", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull().unique(),
@@ -30,13 +38,13 @@ export const usersTable = pgTable("users", {
 });
 
 export const submissionsTable = pgTable("submissions", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: serial("id").primaryKey(),
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
   problemId: integer("problem_id")
     .notNull()
     .references(() => problemsTable.id, { onDelete: "cascade" }),
-  submissionStatus: varchar("submission_status", { length: 50 }).notNull(),
+  submissionStatus: submissionStatusEnum("submission_status").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
