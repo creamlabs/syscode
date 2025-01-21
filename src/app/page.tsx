@@ -1,11 +1,11 @@
+import { Editor } from "@/components/editor";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <Button>
-            SysCode
-        </Button>
+    <div className="min-h-screen w-screen grid grid-rows-[max-content_1fr] justify-items-center">
+      <Button>SysCode</Button>
+      <Editor />
     </div>
   );
 }
