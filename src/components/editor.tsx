@@ -15,6 +15,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCallback } from "react";
+import { DesignComponent } from "./design-component";
 
 export const initialNodes: BuiltInNode[] = [
   {
@@ -69,6 +70,7 @@ export const Editor = () => {
       >
         <Background />
         <Controls />
+        <DesignComponent />
       </ReactFlow>
     </div>
   );
