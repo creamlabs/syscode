@@ -98,7 +98,6 @@ export const hintsRelations = relations(hints, ({ one }) => ({
   }),
 }));
 
-
 export const requirementsRelations = relations(requirements, ({ one }) => ({
   problem: one(problems, {
     fields: [requirements.problemId],
@@ -110,4 +109,3 @@ export type Problems = typeof problems;
 export type Users = typeof users;
 export type Submissions = typeof submissions;
 export type Hints = typeof hints;
-

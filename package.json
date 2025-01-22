@@ -10,7 +10,7 @@
     "prepare": "husky",
     "format": "prettier --write ./src/**/*.{ts,tsx,json,md}",
     "lint:eslint:fix": "eslint . --fix",
-    "lint:prettier:fix": "prettier --write ./src/**/*.{ts,tsx,json,md}",
+    "lint:prettier:fix": "prettier --write ./src/**/*.{ts,tsx}",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
