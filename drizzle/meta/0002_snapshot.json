@@ -1,6 +1,6 @@
 {
-  "id": "b48b268d-c262-4357-87a0-c9658ac85476",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "fa91c5c7-d94c-4ecd-a7d8-98c44aab7c0b",
+  "prevId": "099bfb8f-adf3-48d1-b87f-92809629892b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -63,7 +63,7 @@
         },
         "description": {
           "name": "description",
-          "type": "varchar(255)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -97,9 +97,9 @@
         },
         "solution": {
           "name": "solution",
-          "type": "varchar(255)",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -111,6 +111,54 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.requirements": {
+      "name": "requirements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "problem_id": {
+          "name": "problem_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requirement": {
+          "name": "requirement",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requirement_type": {
+          "name": "requirement_type",
+          "type": "requirement_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "requirements_problem_id_problems_id_fk": {
+          "name": "requirements_problem_id_problems_id_fk",
+          "tableFrom": "requirements",
+          "tableTo": "problems",
+          "columnsFrom": ["problem_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -237,6 +285,11 @@
       "name": "difficulty",
       "schema": "public",
       "values": ["easy", "medium", "hard"]
+    },
+    "public.requirement_type": {
+      "name": "requirement_type",
+      "schema": "public",
+      "values": ["functional", "non-functional"]
     },
     "public.submission_status": {
       "name": "submission_status",

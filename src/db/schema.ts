@@ -5,6 +5,7 @@ import {
   timestamp,
   serial,
   pgEnum,
+  text,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -14,16 +15,20 @@ export const submissionStatusEnum = pgEnum("submission_status", [
   "accepted",
   "rejected",
 ]);
+export const requirementTypeEnum = pgEnum("requirement_type", [
+  "functional",
+  "non-functional",
+]);
 
 export const problems = pgTable("problems", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  description: varchar("description", { length: 255 }).notNull(),
+  description: text("description").notNull(),
   difficulty: difficultyEnum("difficulty").notNull(),
   totalSolved: integer("total_solved").default(0),
   likes: integer("likes").default(0),
   dislikes: integer("dislikes").default(0),
-  solution: varchar("solution", { length: 255 }),
+  solution: text("solution").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
@@ -55,6 +60,15 @@ export const hints = pgTable("hints", {
   hint: varchar("hint", { length: 255 }).notNull(),
 });
 
+export const requirements = pgTable("requirements", {
+  id: serial("id").primaryKey(),
+  problemId: integer("problem_id")
+    .notNull()
+    .references(() => problems.id, { onDelete: "cascade" }),
+  requirement: varchar("requirement", { length: 255 }).notNull(),
+  requirementType: requirementTypeEnum("requirement_type").notNull(),
+});
+
 //Relations
 export const usersRelations = relations(users, ({ many }) => ({
   submissions: many(submissions),
@@ -63,6 +77,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const problemsRelations = relations(problems, ({ many }) => ({
   submissions: many(submissions),
   hints: many(hints),
+  requirements: many(requirements),
 }));
 
 export const submissionsRelations = relations(submissions, ({ one }) => ({
@@ -83,7 +98,16 @@ export const hintsRelations = relations(hints, ({ one }) => ({
   }),
 }));
 
+
+export const requirementsRelations = relations(requirements, ({ one }) => ({
+  problem: one(problems, {
+    fields: [requirements.problemId],
+    references: [problems.id],
+  }),
+}));
+
 export type Problems = typeof problems;
 export type Users = typeof users;
 export type Submissions = typeof submissions;
 export type Hints = typeof hints;
+
