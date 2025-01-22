@@ -15,6 +15,10 @@ export const submissionStatusEnum = pgEnum("submission_status", [
   "accepted",
   "rejected",
 ]);
+export const requirementTypeEnum = pgEnum("requirement_type", [
+  "functional",
+  "non-functional",
+]);
 
 export const problems = pgTable("problems", {
   id: serial("id").primaryKey(),
@@ -62,6 +66,7 @@ export const requirements = pgTable("requirements", {
     .notNull()
     .references(() => problems.id, { onDelete: "cascade" }),
   requirement: varchar("requirement", { length: 255 }).notNull(),
+  requirementType: requirementTypeEnum("requirement_type").notNull(),
 });
 
 //Relations
