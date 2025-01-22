@@ -15,6 +15,7 @@
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
+    "db:seed": "npx src/db/seed.ts",
     "lint:fix": "pnpm run lint:eslint:fix && pnpm run lint:prettier:fix"
   },
   "lint-staged": {
