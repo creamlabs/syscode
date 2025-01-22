@@ -3,7 +3,7 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "parser": "typescript",
-  "endOfLine": "lf",
+  "endOfLine": "auto",
   "semi" : true,
   "overrides": [
     {
