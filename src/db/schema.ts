@@ -82,3 +82,8 @@ export const hintsRelations = relations(hints, ({ one }) => ({
     references: [problems.id],
   }),
 }));
+
+export type Problems = typeof problems;
+export type Users = typeof users;
+export type Submissions = typeof submissions;
+export type Hints = typeof hints;
