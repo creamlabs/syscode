@@ -6,12 +6,16 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "prepare": "husky",
+    "format": "prettier --write ./src/**/*.{ts,tsx,json,md}",
+    "lint:eslint:fix": "eslint . --fix",
+    "lint:prettier:fix": "prettier --write ./src/**/*.{ts,tsx,json,md}",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "lint:fix": "pnpm run lint:eslint:fix && pnpm run lint:prettier:fix"
   },
   "lint-staged": {
     "src/**/*.{js,ts,jsx,tsx}": [
@@ -22,13 +26,16 @@
     ]
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.7.4",
     "@radix-ui/react-slot": "^1.1.1",
+    "@xyflow/react": "^12.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.4",
     "lucide-react": "^0.473.0",
     "next": "15.1.5",
+    "next-auth": "^4.24.11",
     "pg": "^8.13.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -37,19 +44,28 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.18.0",
+    "@next/eslint-plugin-next": "^15.1.5",
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "drizzle-kit": "^0.30.2",
-    "eslint": "^9",
+    "eslint": "^9.18.0",
     "eslint-config-next": "15.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.1",
     "postcss": "^8",
     "prettier": "3.4.2",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.21.0"
   }
 }
