@@ -22,16 +22,8 @@ const Hero = () => {
             </p>
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
               <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all transform hover:scale-105 animate__animated animate__pulse animate__infinite">
-                Start Designing Now
+                Start Solving Now
               </button>
-            </div>
-            <div className="mt-8 flex items-center gap-4 justify-center lg:justify-start">
-              <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full bg-neutral-700"></div>
-                <div className="w-8 h-8 rounded-full bg-neutral-600"></div>
-                <div className="w-8 h-8 rounded-full bg-neutral-500"></div>
-              </div>
-              <p className="text-gray-400">Join 1000+ developers</p>
             </div>
           </div>
           <div className="relative animate__animated animate__fadeInRight">
