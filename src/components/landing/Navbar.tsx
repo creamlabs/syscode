@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import { ModeToggle } from "../ThemeToggle";
 
 const Navbar = () => {
   return (
@@ -63,25 +65,7 @@ const Navbar = () => {
             <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
               Try Now
             </button>
-            <button
-              id="darkModeToggle"
-              className="text-gray-300 hover:text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-            </button>
+            <ModeToggle />
             <div className="md:hidden">
               <button
                 id="mobileMenuButton"
