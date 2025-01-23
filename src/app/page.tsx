@@ -1,5 +1,5 @@
-import { Editor } from "@/components/editor";
 import { Button } from "@/components/ui/button";
+import { Editor } from "@/features/editor/components/editor";
 
 export default function Home() {
   return (
