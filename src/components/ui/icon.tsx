@@ -1,8 +1,8 @@
-import icons from "@/lib/icon";
+import icons, { IconType } from "@/lib/icon";
 import React, { FC } from "react";
 import { LucideProps } from "lucide-react";
 export interface IconProps extends LucideProps {
-  icon: keyof typeof icons;
+  icon: IconType;
 }
 const Icon: FC<IconProps> = ({ icon, ...props }) => {
   const Comp = icons[icon];
