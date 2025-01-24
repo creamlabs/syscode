@@ -9,12 +9,13 @@ import {
   Globe,
   Cpu,
 } from "lucide-react";
+import Icon from "@/components/ui/icon";
 
 export type ComponentCategory = {
   id: string;
   label: string;
   icon: React.ReactNode;
-  variants: {
+  variants?: {
     id: string;
     label: string;
     description?: string;
@@ -31,11 +32,6 @@ export const COMPONENT_CATEGORIES: ComponentCategory[] = [
     id: "client",
     label: "Client",
     icon: <Smartphone className="w-5 h-5" />,
-    variants: [
-      { id: "mobile", label: "Mobile App" },
-      { id: "web", label: "Web Browser" },
-      { id: "desktop", label: "Desktop App" },
-    ],
   },
   {
     id: "server",
@@ -116,23 +112,25 @@ interface MenuBarProps {
   selectedCategory: ComponentCategory | null;
 }
 
-export const MenuBar: React.FC<MenuBarProps> = ({
-  onSelectCategory,
-  selectedCategory,
-}) => {
+//export const MenuBar: React.FC<MenuBarProps> = ({
+//  onSelectCategory,
+//  selectedCategory,
+//}) => {
+export const MenuBar = () => {
   return (
-    <div className="absolute bottom-8 z-50 left-1/2 -translate-x-1/2 border bg-white rounded-md shadow-lg p-2">
-      <div className="flex gap-2">
+    <div className="border bg-white rounded-md shadow-lg p-1">
+      <div className="flex gap-1">
         {COMPONENT_CATEGORIES.map((category) => (
           <button
             key={category.id}
-            onClick={() => onSelectCategory(category)}
-            className={`p-2 rounded-md hover:bg-gray-100 transition-colors ${
-              selectedCategory?.id === category.id ? "bg-gray-100" : ""
-            }`}
+            //onClick={() => onSelectCategory(category)}
+            className={`p-2 rounded-md hover:bg-gray-100 transition-colors flex items-center gap-0.5 pr-1.5`}
             title={category.label}
           >
             {category.icon}
+            {category.variants && (
+              <Icon icon="chevronUp" className="w-3 h-3 transition-transform" />
+            )}
           </button>
         ))}
       </div>

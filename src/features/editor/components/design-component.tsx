@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ComponentCategory, MenuBar } from "./menu/menubar";
-import { Sidebar } from "./menu/sidebar";
+import { LockButton } from "./menu/lock-button";
 
 export const DesignComponent = () => {
   const [selectedCategory, setSelectedCategory] =
@@ -11,16 +11,9 @@ export const DesignComponent = () => {
     console.log("Dragging component:", type, data);
   };
   return (
-    <>
-      <MenuBar
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-      />
-      <Sidebar
-        category={selectedCategory}
-        onClose={() => setSelectedCategory(null)}
-        onDragStart={handleDragStart}
-      />
-    </>
+    <div className="absolute bottom-8 z-50 left-1/2 -translate-x-1/2 flex gap-2 items-center">
+      <LockButton />
+      <MenuBar />
+    </div>
   );
 };
