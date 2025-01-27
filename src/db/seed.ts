@@ -1,5 +1,5 @@
 import { drizzle } from "drizzle-orm/node-postgres";
-import { problems, requirements } from "./schema";
+import { problems, requirements, users } from "./schema";
 import { Pool } from "pg";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -127,6 +127,34 @@ async function seed() {
       requirementType: "non-functional",
     },
   ]);
+
+  await db.insert(users).values([
+    {
+      githubUsername: "johnDoe",
+      image: "https://example.com/images/johndoe.png",
+      email: "john.doe@example.com",
+      points: 150,
+    },
+    {
+      githubUsername: "janeSmith",
+      image: "https://example.com/images/janesmith.png",
+      email: "jane.smith@example.com",
+      points: 200,
+    },
+    {
+      githubUsername: "aliceBrown",
+      image: "https://example.com/images/alicebrown.png",
+      email: "alice.brown@example.com",
+      points: 120,
+    },
+    {
+      githubUsername: "bobWhite",
+      image: "https://example.com/images/bobwhite.png",
+      email: "bob.white@example.com",
+      points: 180,
+    },
+  ]);
+
   console.log("Database seeded Successfully");
 }
 seed();
