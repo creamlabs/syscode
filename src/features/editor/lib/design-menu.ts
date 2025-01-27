@@ -16,7 +16,7 @@ export type ComponentCategory = {
   }[];
 };
 
-export const COMPONENT_CATEGORIES: ComponentCategory[] = [
+export const COMPONENT_CATEGORIES = [
   {
     id: "client",
     label: "Client",
@@ -94,4 +94,6 @@ export const COMPONENT_CATEGORIES: ComponentCategory[] = [
       { id: "kubernetes", label: "Kubernetes" },
     ],
   },
-];
+] as const satisfies ComponentCategory[];
+
+export type ComponentCategoryId = (typeof COMPONENT_CATEGORIES)[number]["id"];

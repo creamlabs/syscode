@@ -1,13 +1,14 @@
 import Icon from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useMenuStore } from "@/features/editor/store/menuStore";
 
 export const LockButton = () => {
-  const [isLocked, setIsLocked] = useState(false);
+  const { isLocked, setIsLocked } = useMenuStore();
 
   const handleClick = () => {
-    setIsLocked((prev) => !prev);
+    setIsLocked();
   };
+
   return (
     <button
       className={cn(
