@@ -4,7 +4,7 @@ import {
   ComponentCategoryId,
   type ComponentCategory,
 } from "@/features/editor/lib/design-menu";
-import { useMenuStore } from "../../store/menuStore";
+import { useMenuStore } from "@/features/editor/store/menuStore";
 
 const hasVariants = (
   category: ComponentCategory,
@@ -17,6 +17,9 @@ export const MenuComponent: React.FC<{ category: ComponentCategory }> = ({
 }) => {
   const { openedCategory, setOpenedCategory } = useMenuStore();
 
+  const isOpen = openedCategory === category.id;
+  const shouldShowPopover = isOpen && hasVariants(category);
+
   const handleClick = () => {
     setOpenedCategory(
       openedCategory === (category.id as ComponentCategoryId)
@@ -24,11 +27,6 @@ export const MenuComponent: React.FC<{ category: ComponentCategory }> = ({
         : (category.id as ComponentCategoryId),
     );
   };
-
-  const isOpen = openedCategory === category.id;
-
-  const shouldShowPopover =
-    openedCategory === category.id && hasVariants(category);
 
   return (
     <div className="relative">
@@ -63,11 +61,18 @@ interface MenuPopoverProps {
 }
 
 const MenuPopover = ({ variants }: MenuPopoverProps) => {
+    const { setSelectedComponent } = useMenuStore();
+
+    const handlePopoverClick = () => {
+
+    }
+
   return (
     <div className="grid absolute bottom-full mb-2 bg-white p-1 rounded-md shadow-lg w-max border">
       {variants.map((variant) => (
         <button
           key={variant.id}
+          onClick={handlePopoverClick}
           className={cn(
             `p-2 rounded-md hover:bg-gray-100 text-left text-sm pr-16`,
             //selectedComponent?.variant === variant.id && "bg-blue-50 text-blue-600",
