@@ -51,31 +51,42 @@ export const MenuComponent: React.FC<{ category: ComponentCategory }> = ({
           />
         )}
       </button>
-      {shouldShowPopover && <MenuPopover variants={category.variants} />}
+      {shouldShowPopover && (
+        <MenuPopover
+          id={category.id as ComponentCategoryId}
+          variants={category.variants}
+        />
+      )}
     </div>
   );
 };
 
 interface MenuPopoverProps {
+  id: ComponentCategoryId;
   variants: NonNullable<ComponentCategory["variants"]>;
 }
 
-const MenuPopover = ({ variants }: MenuPopoverProps) => {
-    const { setSelectedComponent } = useMenuStore();
+const MenuPopover = ({ id, variants }: MenuPopoverProps) => {
+  const { selectedComponent, setSelectedComponent } = useMenuStore();
 
-    const handlePopoverClick = () => {
-
-    }
+  const handlePopoverClick = (variantId: string) => {
+    console.log("handlePopoverClick", id, variantId);
+    setSelectedComponent({
+      id,
+      variant: variantId,
+    });
+  };
 
   return (
     <div className="grid absolute bottom-full mb-2 bg-white p-1 rounded-md shadow-lg w-max border">
       {variants.map((variant) => (
         <button
           key={variant.id}
-          onClick={handlePopoverClick}
+          onClick={() => handlePopoverClick(variant.id)}
           className={cn(
             `p-2 rounded-md hover:bg-gray-100 text-left text-sm pr-16`,
-            //selectedComponent?.variant === variant.id && "bg-blue-50 text-blue-600",
+            selectedComponent?.variant === variant.id &&
+              "bg-blue-50 text-blue-600",
           )}
         >
           {variant.label}

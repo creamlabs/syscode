@@ -6,7 +6,7 @@ export const MenuBar = () => {
     <div className="border bg-white rounded-md shadow-lg p-1">
       <div className="flex gap-1">
         {COMPONENT_CATEGORIES.map((category) => (
-          <MenuComponent category={category} />
+          <MenuComponent key={category.id} category={category} />
         ))}
       </div>
     </div>

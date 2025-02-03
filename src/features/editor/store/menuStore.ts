@@ -1,12 +1,17 @@
 import { create } from "zustand";
 import { ComponentCategoryId } from "@/features/editor/lib/design-menu";
 
+type SelectedComponent = {
+  id: ComponentCategoryId;
+  variant?: string;
+};
+
 interface MenuStore {
   isLocked: boolean;
-  selectedComponent: ComponentCategoryId | null;
+  selectedComponent: SelectedComponent | null;
   openedCategory: ComponentCategoryId | null;
   setIsLocked: () => void;
-  setSelectedComponent: (value: ComponentCategoryId | null) => void;
+  setSelectedComponent: (value: SelectedComponent | null) => void;
   setOpenedCategory: (value: ComponentCategoryId | null) => void;
 }
 

@@ -66,6 +66,7 @@ export const Editor = () => {
         edgeTypes={edgeTypes}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        colorMode="dark"
         fitView
       >
         <Background />
