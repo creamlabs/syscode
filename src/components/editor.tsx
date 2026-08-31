@@ -45,6 +45,7 @@ import {
   Redo2,
   RotateCcw,
   Server,
+  Trash2,
   Undo2,
   Workflow,
   Zap,
@@ -214,12 +215,19 @@ function WorkspaceCanvas() {
   const [diagramName, setDiagramName] = useState("URL shortener");
   const [saveStatus, setSaveStatus] = useState<"saved" | "error">("saved");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [selection, setSelection] = useState<{
+    nodes: SystemNode[];
+    edges: Edge[];
+  }>({ nodes: [], edges: [] });
   const [hydrated, setHydrated] = useState(false);
   const [, refreshHistoryControls] = useState(0);
   const history = useRef<DiagramSnapshot[]>([]);
   const future = useRef<DiagramSnapshot[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const { screenToFlowPosition, fitView } = useReactFlow<SystemNode, Edge>();
+  const { screenToFlowPosition, fitView, deleteElements } = useReactFlow<
+    SystemNode,
+    Edge
+  >();
 
   const commitHistory = useCallback(() => {
     history.current = [...history.current.slice(-39), { nodes, edges }];
@@ -331,6 +339,11 @@ function WorkspaceCanvas() {
     window.setTimeout(() => fitView({ padding: 0.2, duration: 450 }), 0);
   }, [commitHistory, fitView, setEdges, setNodes]);
 
+  const deleteSelection = useCallback(() => {
+    if (!selection.nodes.length && !selection.edges.length) return;
+    void deleteElements(selection);
+  }, [deleteElements, selection]);
+
   const exportDiagram = useCallback(() => {
     const file = new Blob(
       [serializeDiagramDocument({ name: diagramName, nodes, edges }, true)],
@@ -425,6 +438,16 @@ function WorkspaceCanvas() {
           >
             <RotateCcw className="size-3.5" />
             Reset
+          </button>
+          <button
+            type="button"
+            onClick={deleteSelection}
+            disabled={!selection.nodes.length && !selection.edges.length}
+            title="Delete selection"
+            aria-label="Delete selection"
+            className="grid size-9 place-items-center rounded-lg border border-white/10 text-slate-400 transition hover:border-rose-400/30 hover:bg-rose-400/10 hover:text-rose-300 disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <Trash2 className="size-4" />
           </button>
           <button
             type="button"
@@ -523,16 +546,21 @@ function WorkspaceCanvas() {
             nodes={nodes}
             edges={edges}
             nodeTypes={nodeTypes}
-            onNodesChange={(changes) => {
-              if (changes.some((change) => change.type === "remove"))
-                commitHistory();
-              onNodesChangeBase(changes);
+            onNodesChange={onNodesChangeBase}
+            onEdgesChange={onEdgesChangeBase}
+            onBeforeDelete={async () => {
+              commitHistory();
+              return true;
             }}
-            onEdgesChange={(changes) => {
-              if (changes.some((change) => change.type === "remove"))
-                commitHistory();
-              onEdgesChangeBase(changes);
-            }}
+            onSelectionChange={({
+              nodes: selectedNodes,
+              edges: selectedEdges,
+            }) =>
+              setSelection({
+                nodes: selectedNodes as SystemNode[],
+                edges: selectedEdges,
+              })
+            }
             onNodeDragStart={commitHistory}
             onConnect={onConnect}
             defaultEdgeOptions={edgeOptions}
