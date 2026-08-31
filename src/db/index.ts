@@ -3,12 +3,17 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "./schema";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("Missing DATABASE_URL");
-}
+let database: ReturnType<typeof drizzle<typeof schema>> | undefined;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+export const getDb = () => {
+  if (!process.env.DATABASE_URL) {
+    throw new Error("Missing DATABASE_URL");
+  }
 
-export const db = drizzle(pool, { schema });
+  if (!database) {
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    database = drizzle(pool, { schema });
+  }
+
+  return database;
+};

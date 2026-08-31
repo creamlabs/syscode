@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { users } from "@/db/schema";
 import GithubProvider from "next-auth/providers/github";
 import { eq } from "drizzle-orm";
@@ -21,6 +21,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       try {
         if (account?.provider === "github" && user) {
+          const db = getDb();
           const { email, image } = user;
           const githubUsername = (profile as any)?.login;
 
