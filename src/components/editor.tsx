@@ -23,7 +23,7 @@ import "@xyflow/react/dist/style.css";
 import {
   ComponentKey,
   DIAGRAM_STORAGE_KEY,
-  DiagramSnapshot,
+  DiagramDocument,
   parseDiagramDocument,
   serializeDiagramDocument,
   SystemNode,
@@ -48,11 +48,19 @@ import {
   Server,
   Trash2,
   Undo2,
+  Upload,
   Workflow,
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { DragEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  DragEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type ComponentDefinition = {
   key: ComponentKey;
@@ -222,19 +230,23 @@ function WorkspaceCanvas() {
   }>({ nodes: [], edges: [] });
   const [hydrated, setHydrated] = useState(false);
   const [, refreshHistoryControls] = useState(0);
-  const history = useRef<DiagramSnapshot[]>([]);
-  const future = useRef<DiagramSnapshot[]>([]);
+  const history = useRef<DiagramDocument[]>([]);
+  const future = useRef<DiagramDocument[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const { screenToFlowPosition, fitView, deleteElements } = useReactFlow<
     SystemNode,
     Edge
   >();
 
   const commitHistory = useCallback(() => {
-    history.current = [...history.current.slice(-39), { nodes, edges }];
+    history.current = [
+      ...history.current.slice(-39),
+      { name: diagramName, nodes, edges },
+    ];
     future.current = [];
     refreshHistoryControls((version) => version + 1);
-  }, [edges, nodes]);
+  }, [diagramName, edges, nodes]);
 
   useEffect(() => {
     try {
@@ -316,22 +328,27 @@ function WorkspaceCanvas() {
   const undo = useCallback(() => {
     const previous = history.current.at(-1);
     if (!previous) return;
-    future.current = [{ nodes, edges }, ...future.current.slice(0, 39)];
+    future.current = [
+      { name: diagramName, nodes, edges },
+      ...future.current.slice(0, 39),
+    ];
     history.current = history.current.slice(0, -1);
     setNodes(previous.nodes);
     setEdges(previous.edges);
+    setDiagramName(previous.name);
     refreshHistoryControls((version) => version + 1);
-  }, [edges, nodes, setEdges, setNodes]);
+  }, [diagramName, edges, nodes, setEdges, setNodes]);
 
   const redo = useCallback(() => {
     const next = future.current[0];
     if (!next) return;
-    history.current = [...history.current, { nodes, edges }];
+    history.current = [...history.current, { name: diagramName, nodes, edges }];
     future.current = future.current.slice(1);
     setNodes(next.nodes);
     setEdges(next.edges);
+    setDiagramName(next.name);
     refreshHistoryControls((version) => version + 1);
-  }, [edges, nodes, setEdges, setNodes]);
+  }, [diagramName, edges, nodes, setEdges, setNodes]);
 
   const reset = useCallback(() => {
     commitHistory();
@@ -372,8 +389,41 @@ function WorkspaceCanvas() {
         .replace(/[^a-z0-9]+/g, "-") || "syscode-diagram"
     }.json`;
     anchor.click();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
   }, [diagramName, edges, nodes]);
+
+  const importDiagram = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      event.target.value = "";
+      if (!file) return;
+      if (file.size > 1_000_000) {
+        window.alert("That diagram is too large to import.");
+        return;
+      }
+
+      let rawDiagram: string;
+      try {
+        rawDiagram = await file.text();
+      } catch {
+        window.alert("SysCode could not read that file.");
+        return;
+      }
+
+      const diagram = parseDiagramDocument(rawDiagram);
+      if (!diagram) {
+        window.alert("This file is not a valid SysCode diagram.");
+        return;
+      }
+
+      commitHistory();
+      setDiagramName(diagram.name);
+      setNodes(diagram.nodes);
+      setEdges(diagram.edges);
+      window.setTimeout(() => fitView({ padding: 0.2, duration: 450 }), 0);
+    },
+    [commitHistory, fitView, setEdges, setNodes],
+  );
 
   const onDrop = useCallback(
     (event: DragEvent<HTMLDivElement>) => {
@@ -409,7 +459,7 @@ function WorkspaceCanvas() {
               aria-label="Diagram name"
               value={diagramName}
               onChange={(event) => setDiagramName(event.target.value)}
-              className="w-36 truncate rounded px-1 text-sm font-semibold text-slate-100 outline-none placeholder:text-slate-600 focus-visible:ring-2 focus-visible:ring-sky-400/70 sm:w-56"
+              className="w-20 truncate rounded px-1 text-sm font-semibold text-slate-100 outline-none placeholder:text-slate-600 focus-visible:ring-2 focus-visible:ring-sky-400/70 sm:w-56"
               placeholder="Untitled design"
             />
             <p
@@ -461,6 +511,23 @@ function WorkspaceCanvas() {
             className="grid size-9 place-items-center rounded-lg border border-white/10 text-slate-400 transition hover:border-rose-400/30 hover:bg-rose-400/10 hover:text-rose-300 disabled:cursor-not-allowed disabled:opacity-30"
           >
             <Trash2 className="size-4" />
+          </button>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            className="sr-only"
+            tabIndex={-1}
+            onChange={importDiagram}
+          />
+          <button
+            type="button"
+            onClick={() => importInputRef.current?.click()}
+            title="Import diagram"
+            aria-label="Import diagram"
+            className="grid size-9 place-items-center rounded-lg border border-white/10 text-slate-400 transition hover:bg-white/5 hover:text-white"
+          >
+            <Upload className="size-4" />
           </button>
           <button
             type="button"
