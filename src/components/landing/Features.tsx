@@ -1,174 +1,137 @@
+import {
+  Blocks,
+  BrainCircuit,
+  GitBranch,
+  MousePointer2,
+  Save,
+  Sparkles,
+} from "lucide-react";
+
+const features = [
+  {
+    icon: Blocks,
+    title: "Architecture components",
+    copy: "Start with familiar building blocks—from clients and gateways to queues, caches, and databases.",
+  },
+  {
+    icon: GitBranch,
+    title: "Flows you can follow",
+    copy: "Connect services and make the path of every request visible at a glance.",
+  },
+  {
+    icon: MousePointer2,
+    title: "A canvas that stays fluid",
+    copy: "Move, connect, zoom, and reorganize ideas without fighting rigid diagram tools.",
+  },
+  {
+    icon: Save,
+    title: "Automatic local saves",
+    copy: "Your latest design stays in this browser, so you can leave and pick up where you stopped.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "Built for learning",
+    copy: "A focused workspace encourages you to reason about boundaries, bottlenecks, and trade-offs.",
+  },
+  {
+    icon: Sparkles,
+    title: "Useful from the first click",
+    copy: "Open the starter architecture, remix it, or clear the canvas and begin from scratch.",
+  },
+];
+
 const Features = () => {
   return (
-    <section id="features" className="py-20 bg-neutral-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate__animated animate__fadeIn">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Powerful Features for System Design
-          </h2>
-          <p className="text-gray-400 text-lg">
-            Everything you need to create and practice system architecture
-            diagrams
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="bg-neutral-900 p-6 rounded-xl border border-neutral-700 hover:border-blue-500 transition-all animate__animated animate__fadeInUp">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-blue-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              Drag & Drop Interface
-            </h3>
-            <p className="text-gray-400">
-              Intuitive drag and drop functionality with React Flow for creating
-              system diagrams effortlessly.
+    <>
+      <section
+        id="features"
+        className="border-y border-white/[0.07] bg-white/[0.018] px-5 py-24 sm:px-8 sm:py-28"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
+              Designed for clarity
+            </span>
+            <h2 className="text-balance mt-4 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              Everything you need to think in systems.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-slate-400">
+              Keep the mechanics simple so your attention stays on the
+              architecture.
             </p>
           </div>
-
-          <div className="bg-neutral-900 p-6 rounded-xl border border-neutral-700 hover:border-purple-500 transition-all animate__animated animate__fadeInUp">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-purple-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map(({ icon: Icon, title, copy }) => (
+              <article
+                key={title}
+                className="group bg-[#0a0e14] p-7 transition-colors hover:bg-[#0d131c] sm:p-8"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              Component Library
-            </h3>
-            <p className="text-gray-400">
-              Extensive collection of pre-built system design components and
-              architectural patterns.
-            </p>
-          </div>
-
-          <div className="bg-neutral-900 p-6 rounded-xl border border-neutral-700 hover:border-green-500 transition-all animate__animated animate__fadeInUp">
-            <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              Real-time Validation
-            </h3>
-            <p className="text-gray-400">
-              Instant feedback on your system design with best practices and
-              optimization suggestions.
-            </p>
-          </div>
-
-          <div className="bg-neutral-900 p-6 rounded-xl border border-neutral-700 hover:border-red-500 transition-all animate__animated animate__fadeInUp">
-            <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-red-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              Practice Questions
-            </h3>
-            <p className="text-gray-400">
-              Curated collection of system design interview questions from top
-              tech companies.
-            </p>
-          </div>
-
-          <div className="bg-neutral-900 p-6 rounded-xl border border-neutral-700 hover:border-yellow-500 transition-all animate__animated animate__fadeInUp">
-            <div className="w-12 h-12 bg-yellow-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-yellow-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">
-              Export & Share
-            </h3>
-            <p className="text-gray-400">
-              Export your diagrams in multiple formats and share them with your
-              team instantly.
-            </p>
-          </div>
-
-          <div className="bg-neutral-900 p-6 rounded-xl border border-neutral-700 hover:border-indigo-500 transition-all animate__animated animate__fadeInUp">
-            <div className="w-12 h-12 bg-indigo-500/20 rounded-lg flex items-center justify-center mb-4">
-              <svg
-                className="w-6 h-6 text-indigo-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                ></path>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Dark Mode</h3>
-            <p className="text-gray-400">
-              Comfortable viewing experience with dark mode support for long
-              design sessions.
-            </p>
+                <div className="mb-6 grid size-10 place-items-center rounded-xl border border-sky-400/15 bg-sky-400/[0.07] text-sky-300 transition group-hover:border-sky-400/30 group-hover:bg-sky-400/10">
+                  <Icon className="size-5" strokeWidth={1.8} />
+                </div>
+                <h3 className="font-semibold text-slate-100">{title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-500">{copy}</p>
+              </article>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section id="how-it-works" className="px-5 py-24 sm:px-8 sm:py-32">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-14 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+            <div className="lg:sticky lg:top-28">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">
+                A shorter feedback loop
+              </span>
+              <h2 className="text-balance mt-4 text-3xl font-semibold tracking-tight sm:text-5xl">
+                From blank canvas to clear architecture.
+              </h2>
+              <p className="mt-5 max-w-md text-lg leading-8 text-slate-400">
+                Build an idea in minutes, then refine it as your understanding
+                grows.
+              </p>
+            </div>
+            <ol className="space-y-4">
+              {[
+                [
+                  "01",
+                  "Choose the building blocks",
+                  "Pick components from the library or use the starter system as a practical jumping-off point.",
+                ],
+                [
+                  "02",
+                  "Connect the request flow",
+                  "Draw the relationships between services and rearrange the canvas until the design reads naturally.",
+                ],
+                [
+                  "03",
+                  "Iterate without fear",
+                  "Undo changes, reset the example, or return later—your browser keeps your latest draft close.",
+                ],
+              ].map(([number, title, copy]) => (
+                <li
+                  key={number}
+                  className="grid gap-5 rounded-2xl border border-white/[0.08] bg-white/[0.025] p-6 sm:grid-cols-[70px_1fr] sm:p-8"
+                >
+                  <span className="font-mono text-sm text-sky-300/70">
+                    {number}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">
+                      {title}
+                    </h3>
+                    <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+                      {copy}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

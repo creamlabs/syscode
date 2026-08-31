@@ -1,109 +1,96 @@
 "use client";
 
-import { ModeToggle } from "../ThemeToggle";
+import { Boxes, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+
+const links = [
+  { label: "Why SysCode", href: "#features" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "FAQ", href: "#faq" },
+];
 
 const Navbar = () => {
-  return (
-    <nav
-      id="navbar"
-      className="fixed w-full z-50 bg-neutral-900 border-b border-neutral-800"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <span className="text-2xl font-bold text-white">SysCode</span>
-            </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <a
-                  href="#features"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Features
-                </a>
+  const [isOpen, setIsOpen] = useState(false);
 
-                <a
-                  href="#pricing"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Pricing
-                </a>
-                <a
-                  href="#testimonials"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Testimonials
-                </a>
-                <a
-                  href="#faq"
-                  className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  FAQ
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
-              Try Now
-            </button>
-            <ModeToggle />
-            <div className="md:hidden">
-              <button
-                id="mobileMenuButton"
-                className="text-gray-300 hover:text-white"
-              >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        id="mobileMenu"
-        className="hidden md:hidden bg-neutral-900 animate__animated animate__fadeIn"
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#070a0f]/80 backdrop-blur-xl">
+      <nav
+        aria-label="Main navigation"
+        className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <a
-            href="#features"
-            className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Features
-          </a>
-          <a
-            href="#pricing"
-            className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Pricing
-          </a>
-          <a
-            href="#testimonials"
-            className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            Testimonials
-          </a>
-          <a
-            href="#faq"
-            className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-          >
-            FAQ
-          </a>
+        <Link
+          href="/"
+          className="flex items-center gap-2.5"
+          aria-label="SysCode home"
+        >
+          <span className="grid size-8 place-items-center rounded-lg bg-sky-400 text-slate-950 shadow-[0_0_24px_rgba(56,189,248,0.25)]">
+            <Boxes className="size-4" strokeWidth={2.4} />
+          </span>
+          <span className="text-lg font-semibold tracking-tight text-white">
+            SysCode
+          </span>
+        </Link>
+
+        <div className="hidden items-center gap-8 md:flex">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-slate-400 transition-colors hover:text-white"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
-      </div>
-    </nav>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/home"
+            className="hidden rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-100 sm:inline-flex"
+          >
+            Open canvas
+          </Link>
+          <button
+            type="button"
+            className="grid size-9 place-items-center rounded-lg border border-white/10 text-slate-300 md:hidden"
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
+            aria-label={isOpen ? "Close navigation" : "Open navigation"}
+            onClick={() => setIsOpen((open) => !open)}
+          >
+            {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
+      </nav>
+
+      {isOpen && (
+        <div
+          id="mobile-navigation"
+          className="border-t border-white/10 bg-[#090d13] px-5 py-4 md:hidden"
+        >
+          <div className="mx-auto flex max-w-7xl flex-col gap-1">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="rounded-lg px-3 py-3 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-white"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
+            <Link
+              href="/home"
+              className="mt-2 rounded-lg bg-sky-400 px-4 py-3 text-center text-sm font-semibold text-slate-950"
+              onClick={() => setIsOpen(false)}
+            >
+              Open canvas
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };
 

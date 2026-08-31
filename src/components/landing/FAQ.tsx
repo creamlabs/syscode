@@ -1,98 +1,78 @@
 "use client";
+
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-const FAQItem = ({
-  question,
-  answer,
-  isOpen,
-  onClick,
-}: {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-  onClick: () => void;
-}) => {
-  return (
-    <div className="bg-neutral-900 rounded-lg border border-neutral-700 animate__animated animate__fadeInUp">
-      <button
-        className="faq-button w-full flex justify-between items-center p-6 focus:outline-none"
-        onClick={onClick}
-      >
-        <span className="text-lg font-semibold text-white">{question}</span>
-        <svg
-          className={`faq-icon w-6 h-6 text-gray-400 transform transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-      <div
-        className={`faq-answer ${isOpen ? "" : "hidden"} p-6 pt-0 text-gray-400`}
-      >
-        {answer}
-      </div>
-    </div>
-  );
-};
+const faqs = [
+  {
+    question: "Do I need an account to use the canvas?",
+    answer:
+      "No. The current workspace works without sign-up, and saves your latest diagram locally in this browser.",
+  },
+  {
+    question: "How do I add and connect components?",
+    answer:
+      "Click a component in the library or drag it onto the canvas. Then drag from a node's connection handle to another node to create a relationship.",
+  },
+  {
+    question: "Where is my diagram stored?",
+    answer:
+      "Your nodes and connections are stored in your browser's local storage. They are not uploaded or shared with anyone.",
+  },
+  {
+    question: "Can I take my design with me?",
+    answer:
+      "Yes. Use Export in the workspace to download a JSON copy of the current diagram that you can keep or inspect later.",
+  },
+];
 
-const FAQList = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const faqs = [
-    {
-      question: "How does the drag and drop interface work?",
-      answer:
-        "Simply drag components from the left sidebar onto the canvas. Connect them by clicking and dragging between connection points. The interface automatically aligns and organizes your components for clean architecture diagrams.",
-    },
-    {
-      question: "Can I save and share my diagrams?",
-      answer:
-        "Yes! All diagrams are automatically saved to your account. You can export them as PNG, SVG, or share directly with a link. Pro users get additional collaboration features and unlimited storage.",
-    },
-    {
-      question: "Are the practice questions updated regularly?",
-      answer:
-        "Yes, we add new system design questions weekly based on real interview experiences. Our team researches and validates questions from top tech companies to keep content current.",
-    },
-    {
-      question: "Do you offer team subscriptions?",
-      answer:
-        "Yes, we offer team and enterprise plans with custom pricing. These include additional features like SSO, admin dashboard, and dedicated support. Contact our sales team for details.",
-    },
-  ];
+const FAQ = () => {
+  const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section id="faq" className="py-20 bg-neutral-800">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate__animated animate__fadeIn">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Frequently Asked Questions
+    <section
+      id="faq"
+      className="border-t border-white/[0.07] bg-white/[0.018] px-5 py-24 sm:px-8 sm:py-28"
+    >
+      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.75fr_1.25fr]">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
+            Questions, answered
+          </span>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Good to know before you start.
           </h2>
-          <p className="text-gray-400 text-lg">
-            Everything you need to know about the platform
-          </p>
         </div>
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <FAQItem
-              key={index}
-              question={faq.question}
-              answer={faq.answer}
-              isOpen={openIndex === index}
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            />
-          ))}
+        <div className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+          {faqs.map((faq, index) => {
+            const isOpen = openIndex === index;
+            return (
+              <div key={faq.question}>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between gap-6 py-6 text-left"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpenIndex(isOpen ? -1 : index)}
+                >
+                  <span className="font-medium text-slate-200">
+                    {faq.question}
+                  </span>
+                  <ChevronDown
+                    className={`size-4 shrink-0 text-slate-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isOpen && (
+                  <p className="max-w-2xl pb-6 pr-10 text-sm leading-6 text-slate-500">
+                    {faq.answer}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 };
 
-export default FAQList;
+export default FAQ;
