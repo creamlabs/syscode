@@ -36,6 +36,7 @@ import {
   Cloud,
   Database,
   Download,
+  Eraser,
   Globe2,
   GripVertical,
   HardDrive,
@@ -344,6 +345,18 @@ function WorkspaceCanvas() {
     void deleteElements(selection);
   }, [deleteElements, selection]);
 
+  const clearCanvas = useCallback(() => {
+    if (!nodes.length && !edges.length) return;
+    if (
+      !window.confirm(
+        "Clear every component and connection? You can undo this action.",
+      )
+    ) {
+      return;
+    }
+    void deleteElements({ nodes, edges });
+  }, [deleteElements, edges, nodes]);
+
   const exportDiagram = useCallback(() => {
     const file = new Blob(
       [serializeDiagramDocument({ name: diagramName, nodes, edges }, true)],
@@ -511,6 +524,24 @@ function WorkspaceCanvas() {
                 </button>
               ),
             )}
+            <button
+              type="button"
+              onClick={clearCanvas}
+              disabled={!nodes.length && !edges.length}
+              className="group flex min-w-40 items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3 text-left transition hover:border-rose-400/20 hover:bg-rose-400/[0.06] disabled:cursor-not-allowed disabled:opacity-40 md:min-w-0"
+            >
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-rose-400/[0.07] text-rose-300">
+                <Eraser className="size-4" />
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate text-xs font-medium text-slate-300 group-hover:text-white">
+                  Clear canvas
+                </span>
+                <span className="mt-0.5 block truncate text-[10px] text-slate-600">
+                  Remove everything
+                </span>
+              </span>
+            </button>
           </div>
           <p className="mt-auto hidden border-t border-white/[0.07] p-4 text-[10px] leading-4 text-slate-600 md:block">
             Tip: select a component and press Delete to remove it. Connect nodes

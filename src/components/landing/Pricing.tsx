@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const benefits = [
   "Full component library",
-  "Unlimited local drafts",
+  "Automatic local saving",
   "Undo and redo history",
   "JSON export",
 ];
