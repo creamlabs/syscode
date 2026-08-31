@@ -662,6 +662,28 @@ function WorkspaceCanvas() {
               <PanelLeftOpen className="size-4" />
             )}
           </button>
+          {!nodes.length && (
+            <div className="pointer-events-none absolute inset-0 z-[5] grid place-items-center p-6">
+              <div className="max-w-xs rounded-2xl border border-white/10 bg-[#0d131c]/95 p-6 text-center shadow-2xl backdrop-blur">
+                <span className="mx-auto grid size-11 place-items-center rounded-xl bg-sky-400/10 text-sky-300">
+                  <Boxes className="size-5" />
+                </span>
+                <h2 className="mt-4 text-sm font-semibold text-slate-100">
+                  Your canvas is ready
+                </h2>
+                <p className="mt-2 text-xs leading-5 text-slate-500">
+                  Choose any component from the library, or begin with a client.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => addComponent("client")}
+                  className="pointer-events-auto mt-5 rounded-lg bg-sky-400 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-300"
+                >
+                  Add a client
+                </button>
+              </div>
+            </div>
+          )}
           <ReactFlow<SystemNode, Edge>
             nodes={nodes}
             edges={edges}
