@@ -350,6 +350,26 @@ function WorkspaceCanvas() {
     refreshHistoryControls((version) => version + 1);
   }, [diagramName, edges, nodes, setEdges, setNodes]);
 
+  useEffect(() => {
+    const handleHistoryShortcut = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("input, textarea, [contenteditable='true']")) return;
+      if (!event.metaKey && !event.ctrlKey) return;
+
+      if (event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        if (event.shiftKey) redo();
+        else undo();
+      } else if (event.key.toLowerCase() === "y") {
+        event.preventDefault();
+        redo();
+      }
+    };
+
+    window.addEventListener("keydown", handleHistoryShortcut);
+    return () => window.removeEventListener("keydown", handleHistoryShortcut);
+  }, [redo, undo]);
+
   const reset = useCallback(() => {
     commitHistory();
     setNodes(starterNodes);
