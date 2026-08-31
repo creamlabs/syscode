@@ -22,7 +22,7 @@ const faqs = [
   {
     question: "Can I take my design with me?",
     answer:
-      "Yes. Use Export in the workspace to download a JSON copy of the current diagram that you can keep or inspect later.",
+      "Yes. Export a JSON copy from the workspace, then import that file whenever you want to keep working on the design.",
   },
 ];
 

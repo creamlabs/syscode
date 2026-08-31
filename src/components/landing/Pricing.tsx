@@ -5,7 +5,7 @@ const benefits = [
   "Full component library",
   "Automatic local saving",
   "Undo and redo history",
-  "JSON export",
+  "JSON import and export",
 ];
 
 const Pricing = () => {
