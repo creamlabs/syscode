@@ -405,7 +405,7 @@ function WorkspaceCanvas() {
               aria-label="Diagram name"
               value={diagramName}
               onChange={(event) => setDiagramName(event.target.value)}
-              className="w-36 truncate bg-transparent text-sm font-semibold text-slate-100 outline-none placeholder:text-slate-600 sm:w-56"
+              className="w-36 truncate rounded px-1 text-sm font-semibold text-slate-100 outline-none placeholder:text-slate-600 focus-visible:ring-2 focus-visible:ring-sky-400/70 sm:w-56"
               placeholder="Untitled design"
             />
             <p className="hidden items-center gap-1.5 text-[10px] text-slate-600 sm:flex">
