@@ -452,6 +452,8 @@ function WorkspaceCanvas() {
           <button
             type="button"
             onClick={exportDiagram}
+            title="Export diagram"
+            aria-label="Export diagram"
             className="flex h-9 items-center gap-2 rounded-lg bg-sky-400 px-3 text-xs font-semibold text-slate-950 transition hover:bg-sky-300"
           >
             <Download className="size-3.5" />
