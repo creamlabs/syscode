@@ -5,11 +5,11 @@ import {
   Background,
   BackgroundVariant,
   Controls,
+  DefaultEdgeOptions,
   Edge,
   Handle,
   MarkerType,
   MiniMap,
-  Node,
   NodeProps,
   OnConnect,
   Position,
@@ -20,6 +20,16 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import {
+  ComponentKey,
+  DIAGRAM_STORAGE_KEY,
+  DiagramSnapshot,
+  parseDiagramDocument,
+  serializeDiagramDocument,
+  SystemNode,
+  SystemNodeData,
+  SYSTEM_NODE_SIZE,
+} from "@/lib/diagram-document";
 import {
   ArrowLeft,
   Boxes,
@@ -40,24 +50,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import {
-  DragEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-
-type ComponentKey =
-  | "client"
-  | "gateway"
-  | "service"
-  | "database"
-  | "cache"
-  | "queue"
-  | "storage"
-  | "cloud";
+import { DragEvent, useCallback, useEffect, useRef, useState } from "react";
 
 type ComponentDefinition = {
   key: ComponentKey;
@@ -130,14 +123,6 @@ const componentMap = Object.fromEntries(
   components.map((component) => [component.key, component]),
 ) as Record<ComponentKey, ComponentDefinition>;
 
-type SystemNodeData = {
-  label: string;
-  component: ComponentKey;
-};
-
-type SystemNode = Node<SystemNodeData, "system">;
-type DiagramSnapshot = { nodes: SystemNode[]; edges: Edge[] };
-
 const createNode = (
   id: string,
   component: ComponentKey,
@@ -148,8 +133,8 @@ const createNode = (
   id,
   type: "system",
   position: { x, y },
-  width: 176,
-  height: 60,
+  width: SYSTEM_NODE_SIZE.width,
+  height: SYSTEM_NODE_SIZE.height,
   data: { component, label: label ?? componentMap[component].label },
 });
 
@@ -171,7 +156,11 @@ const starterEdges: Edge[] = [
   { id: "redirect-cache", source: "service-2", target: "cache-1" },
 ];
 
-const STORAGE_KEY = "syscode-diagram-v1";
+const edgeOptions = {
+  type: "smoothstep",
+  markerEnd: { type: MarkerType.ArrowClosed, color: "#64748b" },
+  style: { stroke: "#64748b", strokeWidth: 1.5 },
+} satisfies DefaultEdgeOptions;
 
 function SystemComponentNode({ data, selected }: NodeProps<SystemNode>) {
   const component = componentMap[data.component];
@@ -223,6 +212,7 @@ function WorkspaceCanvas() {
   const [edges, setEdges, onEdgesChangeBase] =
     useEdgesState<Edge>(starterEdges);
   const [diagramName, setDiagramName] = useState("URL shortener");
+  const [saveStatus, setSaveStatus] = useState<"saved" | "error">("saved");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [hydrated, setHydrated] = useState(false);
   const [, refreshHistoryControls] = useState(0);
@@ -239,25 +229,19 @@ function WorkspaceCanvas() {
 
   useEffect(() => {
     try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
+      const stored = window.localStorage.getItem(DIAGRAM_STORAGE_KEY);
       if (stored) {
-        const diagram = JSON.parse(stored) as DiagramSnapshot & {
-          name?: string;
-        };
-        if (Array.isArray(diagram.nodes) && Array.isArray(diagram.edges)) {
-          setNodes(
-            diagram.nodes.map((node) => ({
-              ...node,
-              width: 176,
-              height: 60,
-            })),
-          );
+        const diagram = parseDiagramDocument(stored);
+        if (diagram) {
+          setNodes(diagram.nodes);
           setEdges(diagram.edges);
-          if (diagram.name) setDiagramName(diagram.name);
+          setDiagramName(diagram.name);
+        } else {
+          window.localStorage.removeItem(DIAGRAM_STORAGE_KEY);
         }
       }
     } catch {
-      window.localStorage.removeItem(STORAGE_KEY);
+      window.localStorage.removeItem(DIAGRAM_STORAGE_KEY);
     } finally {
       setHydrated(true);
     }
@@ -266,10 +250,15 @@ function WorkspaceCanvas() {
   useEffect(() => {
     if (!hydrated) return;
     const timeout = window.setTimeout(() => {
-      window.localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ name: diagramName, nodes, edges }),
-      );
+      try {
+        window.localStorage.setItem(
+          DIAGRAM_STORAGE_KEY,
+          serializeDiagramDocument({ name: diagramName, nodes, edges }),
+        );
+        setSaveStatus("saved");
+      } catch {
+        setSaveStatus("error");
+      }
     }, 250);
     return () => window.clearTimeout(timeout);
   }, [diagramName, edges, hydrated, nodes]);
@@ -306,9 +295,7 @@ function WorkspaceCanvas() {
           {
             ...connection,
             id: `edge-${Date.now()}`,
-            type: "smoothstep",
-            markerEnd: { type: MarkerType.ArrowClosed, color: "#64748b" },
-            style: { stroke: "#64748b", strokeWidth: 1.5 },
+            ...edgeOptions,
           },
           currentEdges,
         ),
@@ -346,7 +333,7 @@ function WorkspaceCanvas() {
 
   const exportDiagram = useCallback(() => {
     const file = new Blob(
-      [JSON.stringify({ name: diagramName, nodes, edges }, null, 2)],
+      [serializeDiagramDocument({ name: diagramName, nodes, edges }, true)],
       { type: "application/json" },
     );
     const url = URL.createObjectURL(file);
@@ -377,15 +364,6 @@ function WorkspaceCanvas() {
     [addComponent, screenToFlowPosition],
   );
 
-  const edgeDefaults = useMemo(
-    () => ({
-      type: "smoothstep",
-      markerEnd: { type: MarkerType.ArrowClosed, color: "#64748b" },
-      style: { stroke: "#64748b", strokeWidth: 1.5 },
-    }),
-    [],
-  );
-
   return (
     <main className="flex h-[100dvh] min-h-[580px] flex-col overflow-hidden bg-[#080b10] text-white">
       <header className="z-20 flex h-16 shrink-0 items-center justify-between border-b border-white/10 bg-[#0b0f15] px-3 sm:px-5">
@@ -408,9 +386,13 @@ function WorkspaceCanvas() {
               className="w-36 truncate rounded px-1 text-sm font-semibold text-slate-100 outline-none placeholder:text-slate-600 focus-visible:ring-2 focus-visible:ring-sky-400/70 sm:w-56"
               placeholder="Untitled design"
             />
-            <p className="hidden items-center gap-1.5 text-[10px] text-slate-600 sm:flex">
-              <span className="size-1.5 rounded-full bg-emerald-400" />
-              Saved locally
+            <p
+              className={`hidden items-center gap-1.5 text-[10px] sm:flex ${saveStatus === "saved" ? "text-slate-600" : "text-rose-400"}`}
+            >
+              <span
+                className={`size-1.5 rounded-full ${saveStatus === "saved" ? "bg-emerald-400" : "bg-rose-400"}`}
+              />
+              {saveStatus === "saved" ? "Saved locally" : "Could not save"}
             </p>
           </div>
         </div>
@@ -553,7 +535,7 @@ function WorkspaceCanvas() {
             }}
             onNodeDragStart={commitHistory}
             onConnect={onConnect}
-            defaultEdgeOptions={edgeDefaults}
+            defaultEdgeOptions={edgeOptions}
             colorMode="dark"
             fitView
             fitViewOptions={{ padding: 0.22 }}
