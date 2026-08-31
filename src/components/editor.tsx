@@ -10,8 +10,10 @@ import {
   Handle,
   MarkerType,
   MiniMap,
+  Node,
   NodeProps,
   OnConnect,
+  OnSelectionChangeFunc,
   Position,
   ReactFlow,
   ReactFlowProvider,
@@ -225,7 +227,7 @@ function WorkspaceCanvas() {
   const [saveStatus, setSaveStatus] = useState<"saved" | "error">("saved");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [selection, setSelection] = useState<{
-    nodes: SystemNode[];
+    nodes: Node[];
     edges: Edge[];
   }>({ nodes: [], edges: [] });
   const [hydrated, setHydrated] = useState(false);
@@ -247,6 +249,11 @@ function WorkspaceCanvas() {
     future.current = [];
     refreshHistoryControls((version) => version + 1);
   }, [diagramName, edges, nodes]);
+
+  const handleSelectionChange = useCallback<OnSelectionChangeFunc>(
+    (nextSelection) => setSelection(nextSelection),
+    [],
+  );
 
   useEffect(() => {
     try {
@@ -694,15 +701,7 @@ function WorkspaceCanvas() {
               commitHistory();
               return true;
             }}
-            onSelectionChange={({
-              nodes: selectedNodes,
-              edges: selectedEdges,
-            }) =>
-              setSelection({
-                nodes: selectedNodes as SystemNode[],
-                edges: selectedEdges,
-              })
-            }
+            onSelectionChange={handleSelectionChange}
             onNodeDragStart={commitHistory}
             onConnect={onConnect}
             defaultEdgeOptions={edgeOptions}
