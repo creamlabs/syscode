@@ -1,25 +1,11 @@
-import Demo from "@/components/landing/Demo";
-import FAQ from "@/components/landing/FAQ";
-import Features from "@/components/landing/Features";
-import Footer from "@/components/landing/Footer";
-import Hero from "@/components/landing/Hero";
-import Navbar from "@/components/landing/Navbar";
-import Pricing from "@/components/landing/Pricing";
-import Tutorials from "@/components/landing/Tutorials";
+import type { Metadata } from "next";
+import { Editor } from "@/components/editor";
 
-const page = () => {
-  return (
-    <div>
-      <Navbar />
-      <Hero />
-      <Features />
-      {/* <Demo /> */}
-      {/* <Tutorials/> */}
-      <Pricing />
-      <FAQ />
-      <Footer />
-    </div>
-  );
+export const metadata: Metadata = {
+  title: "Design workspace",
+  description: "Build and explore a system architecture on the SysCode canvas.",
 };
 
-export default page;
+export default function WorkspacePage() {
+  return <Editor />;
+}

@@ -1,244 +1,46 @@
+import { ArrowUpRight, Check } from "lucide-react";
+import Link from "next/link";
+
+const benefits = [
+  "Full component library",
+  "Automatic local saving",
+  "Undo and redo history",
+  "JSON import and export",
+];
+
 const Pricing = () => {
   return (
-    <section id="pricing" className="py-20 bg-neutral-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate__animated animate__fadeIn">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-gray-400 text-lg">
-            Choose the perfect plan for your system design journey
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-neutral-800 rounded-xl p-8 border border-neutral-700 hover:border-blue-500 transition-all animate__animated animate__fadeInUp">
-            <div className="text-center">
-              <h3 className="text-xl font-semibold text-white mb-2">Free</h3>
-              <div className="text-4xl font-bold text-white mb-4">
-                $0<span className="text-lg text-gray-400">/month</span>
-              </div>
-              <p className="text-gray-400 mb-6">Perfect for getting started</p>
-            </div>
-            <ul className="space-y-4 mb-8">
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Basic Components Library
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                5 Diagrams Storage
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Community Support
-              </li>
+    <section className="px-5 pb-24 sm:px-8 sm:pb-32">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-sky-400/15 bg-[linear-gradient(120deg,rgba(56,189,248,0.09),rgba(139,92,246,0.06)_50%,rgba(255,255,255,0.02))] p-7 sm:p-12 lg:p-16">
+        <div className="absolute -right-24 -top-24 size-72 rounded-full bg-sky-400/10 blur-3xl" />
+        <div className="relative grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">
+              Open workspace
+            </span>
+            <h2 className="text-balance mt-4 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              Start with an idea. Leave with a system.
+            </h2>
+            <p className="mt-5 text-lg leading-8 text-slate-400">
+              The canvas is free to use and requires no account. Your work stays
+              private in your browser.
+            </p>
+            <ul className="mt-8 grid gap-3 text-sm text-slate-300 sm:grid-cols-2">
+              {benefits.map((benefit) => (
+                <li key={benefit} className="flex items-center gap-2">
+                  <Check className="size-4 text-emerald-400" />
+                  {benefit}
+                </li>
+              ))}
             </ul>
-            <button className="w-full py-3 px-4 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors">
-              Get Started
-            </button>
           </div>
-
-          <div className="bg-neutral-800 rounded-xl p-8 border-2 border-blue-500 transform scale-105 animate__animated animate__fadeInUp">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
-                Most Popular
-              </span>
-            </div>
-            <div className="text-center">
-              <h3 className="text-xl font-semibold text-white mb-2">Pro</h3>
-              <div className="text-4xl font-bold text-white mb-4">
-                $19<span className="text-lg text-gray-400">/month</span>
-              </div>
-              <p className="text-gray-400 mb-6">For serious system designers</p>
-            </div>
-            <ul className="space-y-4 mb-8">
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Everything in Free
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Unlimited Diagrams
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Advanced Components
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Priority Support
-              </li>
-            </ul>
-            <button className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              Get Pro Access
-            </button>
-          </div>
-
-          <div className="bg-neutral-800 rounded-xl p-8 border border-neutral-700 hover:border-purple-500 transition-all animate__animated animate__fadeInUp">
-            <div className="text-center">
-              <h3 className="text-xl font-semibold text-white mb-2">
-                Enterprise
-              </h3>
-              <div className="text-4xl font-bold text-white mb-4">Custom</div>
-              <p className="text-gray-400 mb-6">
-                For large teams & organizations
-              </p>
-            </div>
-            <ul className="space-y-4 mb-8">
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Everything in Pro
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Custom Components
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                Dedicated Support
-              </li>
-              <li className="flex items-center text-gray-300">
-                <svg
-                  className="w-5 h-5 text-green-500 mr-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M5 13l4 4L19 7"
-                  ></path>
-                </svg>
-                SLA & Training
-              </li>
-            </ul>
-            <button className="w-full py-3 px-4 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors">
-              Contact Sales
-            </button>
-          </div>
+          <Link
+            href="/home"
+            className="group inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-sky-100"
+          >
+            Build a system
+            <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
         </div>
       </div>
     </section>
